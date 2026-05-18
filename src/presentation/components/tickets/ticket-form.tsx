@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Ticket } from "@/domain/entities/ticket";
 import { ticketSchema, type TicketFormValues } from "@/presentation/validation/forms";
 import { Button } from "@/presentation/components/ui/button";
-import { FieldError, SelectInput, TextArea, TextInput } from "@/presentation/components/ui/field";
+import { FieldError, FieldLabel, SelectInput, TextArea, TextInput } from "@/presentation/components/ui/field";
 import { GAME_TYPES, TICKET_STATUSES } from "@/presentation/constants/ticket-options";
 import { fromDateTimeLocalToIso, toDateTimeLocalValue } from "@/presentation/lib/date";
 
@@ -76,17 +76,13 @@ export function TicketForm({
       })}
     >
       <div className="md:col-span-2">
-        <label className="text-sm font-medium text-slate-700" htmlFor="title">
-          Nombre del sorteo
-        </label>
+        <FieldLabel htmlFor="title">Nombre del sorteo</FieldLabel>
         <TextInput id="title" autoComplete="off" {...form.register("title")} />
         <FieldError message={form.formState.errors.title?.message} />
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700" htmlFor="gameType">
-          Tipo de juego
-        </label>
+        <FieldLabel htmlFor="gameType">Tipo de juego</FieldLabel>
         <SelectInput id="gameType" {...form.register("gameType")}>
           {GAME_TYPES.map((g) => (
             <option key={g} value={g}>
@@ -98,9 +94,7 @@ export function TicketForm({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700" htmlFor="status">
-          Estado
-        </label>
+        <FieldLabel htmlFor="status">Estado</FieldLabel>
         <SelectInput id="status" {...form.register("status")}>
           {TICKET_STATUSES.map((s) => (
             <option key={s} value={s}>
@@ -112,41 +106,31 @@ export function TicketForm({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700" htmlFor="gameNumber">
-          Número jugado (opcional)
-        </label>
+        <FieldLabel htmlFor="gameNumber">Número jugado (opcional)</FieldLabel>
         <TextInput id="gameNumber" {...form.register("gameNumber")} />
         <FieldError message={form.formState.errors.gameNumber?.message} />
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700" htmlFor="gameDate">
-          Fecha del sorteo
-        </label>
+        <FieldLabel htmlFor="gameDate">Fecha del sorteo</FieldLabel>
         <TextInput id="gameDate" type="datetime-local" {...form.register("gameDate")} />
         <FieldError message={form.formState.errors.gameDate?.message} />
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700" htmlFor="amount">
-          Valor apostado (opcional)
-        </label>
+        <FieldLabel htmlFor="amount">Valor apostado (opcional)</FieldLabel>
         <TextInput id="amount" inputMode="decimal" {...form.register("amount")} />
         <FieldError message={form.formState.errors.amount?.message as string | undefined} />
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700" htmlFor="place">
-          Lugar de compra (opcional)
-        </label>
+        <FieldLabel htmlFor="place">Lugar de compra (opcional)</FieldLabel>
         <TextInput id="place" {...form.register("place")} />
         <FieldError message={form.formState.errors.place?.message} />
       </div>
 
       <div className="md:col-span-2">
-        <label className="text-sm font-medium text-slate-700" htmlFor="notes">
-          Notas (opcional)
-        </label>
+        <FieldLabel htmlFor="notes">Notas (opcional)</FieldLabel>
         <TextArea id="notes" rows={3} {...form.register("notes")} />
         <FieldError message={form.formState.errors.notes?.message} />
       </div>

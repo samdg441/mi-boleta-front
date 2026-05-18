@@ -17,7 +17,7 @@ export default function HomePage() {
   }, [hydrated, token, router]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-cream bg-mesh-light">
       <Spinner label="Cargando…" />
     </div>
   );

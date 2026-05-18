@@ -19,7 +19,7 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
 
   if (!hydrated || !token) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-brand-cream bg-mesh-light">
         <Spinner label="Comprobando sesión…" />
       </div>
     );
@@ -45,7 +45,7 @@ export function RequireAdmin({ children }: { children: React.ReactNode }) {
 
   if (!hydrated || !token || user?.role !== "admin") {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-brand-cream bg-mesh-light">
         <Spinner label="Verificando permisos…" />
       </div>
     );

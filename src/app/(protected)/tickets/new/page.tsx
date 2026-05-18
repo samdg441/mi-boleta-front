@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { PlusCircle } from "lucide-react";
 import { TicketForm } from "@/presentation/components/tickets/ticket-form";
+import { PageHeader } from "@/presentation/components/layout/page-header";
 import { ticketRepository } from "@/infrastructure/di/container";
 import { ApiError } from "@/infrastructure/http/api-error";
 import { Card } from "@/presentation/components/ui/card";
@@ -14,11 +16,13 @@ export default function NewTicketPage() {
   const [serverError, setServerError] = useState<string | null>(null);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Nueva boleta</h1>
-        <p className="text-sm text-slate-600">Completa los datos del sorteo o rifa.</p>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        badge="Nuevo registro"
+        icon={PlusCircle}
+        title="Nueva boleta"
+        description="Completa los datos del sorteo o rifa. Los campos marcados son obligatorios."
+      />
 
       <Card
         title="Formulario"

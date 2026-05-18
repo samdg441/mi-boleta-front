@@ -6,6 +6,24 @@
   color-scheme: light;
 }
 
-body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-brand-cream text-slate-900 antialiased;
+    background-image: theme(backgroundImage.mesh-light);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-orange-200 text-slate-900;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }

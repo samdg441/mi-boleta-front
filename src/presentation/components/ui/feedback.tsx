@@ -1,11 +1,13 @@
+import { Inbox, Loader2 } from "lucide-react";
+
 export function Spinner({ label = "Cargando…" }: { label?: string }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 py-10 text-slate-600">
-      <div
-        className="h-10 w-10 animate-spin rounded-full border-2 border-slate-200 border-t-brand-primary"
-        aria-hidden
-      />
-      <p className="text-sm">{label}</p>
+    <div className="flex flex-col items-center justify-center gap-4 py-16 text-slate-600">
+      <div className="relative">
+        <div className="absolute inset-0 rounded-full bg-orange-400/20 blur-xl" aria-hidden />
+        <Loader2 className="relative h-10 w-10 animate-spin text-orange-500" strokeWidth={2.4} />
+      </div>
+      <p className="text-sm font-semibold text-slate-600">{label}</p>
     </div>
   );
 }
@@ -20,12 +22,18 @@ export function EmptyState({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-      <p className="text-base font-semibold text-slate-800">{title}</p>
-      {description ? (
-        <p className="mt-2 text-sm text-slate-600">{description}</p>
-      ) : null}
-      {action ? <div className="mt-4 flex justify-center">{action}</div> : null}
+    <div className="relative overflow-hidden rounded-2xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white p-10 text-center">
+      <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-orange-200/30 blur-2xl" />
+      <div className="relative mx-auto flex max-w-md flex-col items-center">
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <Inbox className="h-7 w-7 text-slate-400" strokeWidth={1.75} aria-hidden />
+        </div>
+        <p className="text-base font-bold text-slate-900">{title}</p>
+        {description ? (
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+        ) : null}
+        {action ? <div className="mt-6 flex justify-center">{action}</div> : null}
+      </div>
     </div>
   );
 }

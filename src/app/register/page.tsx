@@ -6,13 +6,15 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Sparkles } from "lucide-react";
 import { authRepository } from "@/infrastructure/di/container";
 import { ApiError } from "@/infrastructure/http/api-error";
 import { registerSchema } from "@/presentation/validation/forms";
 import { useAuthStore } from "@/presentation/stores/auth-store";
 import { useAuthHydration } from "@/presentation/hooks/use-auth-hydration";
+import { AuthSplitLayout } from "@/presentation/components/layout/auth-split-layout";
 import { Button } from "@/presentation/components/ui/button";
-import { FieldError, TextInput } from "@/presentation/components/ui/field";
+import { FieldError, FieldLabel, TextInput } from "@/presentation/components/ui/field";
 
 type FormValues = z.infer<typeof registerSchema>;
 
@@ -55,55 +57,53 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-slate-900">Crear cuenta</h1>
-          <p className="mt-1 text-sm text-slate-600">Registra tus boletas y sorteos</p>
+    <AuthSplitLayout
+      title="Crea tu cuenta"
+      subtitle="En segundos podrás registrar boletas, fechas y estados sin perder el hilo."
+    >
+      <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <div>
+          <FieldLabel htmlFor="name">Nombre completo</FieldLabel>
+          <TextInput id="name" autoComplete="name" {...form.register("name")} />
+          <FieldError message={form.formState.errors.name?.message} />
+        </div>
+        <div>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <TextInput id="email" type="email" autoComplete="email" {...form.register("email")} />
+          <FieldError message={form.formState.errors.email?.message} />
+        </div>
+        <div>
+          <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+          <TextInput
+            id="password"
+            type="password"
+            autoComplete="new-password"
+            {...form.register("password")}
+          />
+          <FieldError message={form.formState.errors.password?.message} />
         </div>
 
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)} noValidate>
-          <div>
-            <label className="text-sm font-medium text-slate-700" htmlFor="name">
-              Nombre completo
-            </label>
-            <TextInput id="name" autoComplete="name" {...form.register("name")} />
-            <FieldError message={form.formState.errors.name?.message} />
+        {form.formState.errors.root?.message ? (
+          <div className="rounded-xl border border-red-100 bg-red-50/70 px-3 py-2">
+            <FieldError message={form.formState.errors.root.message} />
           </div>
-          <div>
-            <label className="text-sm font-medium text-slate-700" htmlFor="email">
-              Email
-            </label>
-            <TextInput id="email" type="email" autoComplete="email" {...form.register("email")} />
-            <FieldError message={form.formState.errors.email?.message} />
-          </div>
-          <div>
-            <label className="text-sm font-medium text-slate-700" htmlFor="password">
-              Contraseña
-            </label>
-            <TextInput
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              {...form.register("password")}
-            />
-            <FieldError message={form.formState.errors.password?.message} />
-          </div>
+        ) : null}
 
-          <FieldError message={form.formState.errors.root?.message} />
+        <Button type="submit" className="w-full py-3 text-base" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Creando cuenta…" : "Registrarme"}
+          {!form.formState.isSubmitting ? <Sparkles className="h-4 w-4" aria-hidden /> : null}
+        </Button>
+      </form>
 
-          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? "Creando cuenta…" : "Registrarme"}
-          </Button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-slate-600">
-          ¿Ya tienes cuenta?{" "}
-          <Link className="font-semibold text-brand-primary hover:underline" href="/login">
-            Inicia sesión
-          </Link>
-        </p>
-      </div>
-    </div>
+      <p className="mt-8 text-center text-sm text-slate-600">
+        ¿Ya tienes cuenta?{" "}
+        <Link
+          className="font-bold text-orange-600 underline decoration-orange-200 underline-offset-4 hover:text-orange-700"
+          href="/login"
+        >
+          Inicia sesión
+        </Link>
+      </p>
+    </AuthSplitLayout>
   );
 }

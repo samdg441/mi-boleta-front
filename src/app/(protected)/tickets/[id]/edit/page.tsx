@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { Pencil } from "lucide-react";
 import { TicketForm } from "@/presentation/components/tickets/ticket-form";
+import { PageHeader } from "@/presentation/components/layout/page-header";
 import { ticketRepository } from "@/infrastructure/di/container";
 import type { Ticket } from "@/domain/entities/ticket";
 import { ApiError } from "@/infrastructure/http/api-error";
@@ -55,11 +57,13 @@ export default function EditTicketPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Editar boleta</h1>
-        <p className="text-sm text-slate-600">Los cambios se guardan en la API.</p>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        badge="Edición"
+        icon={Pencil}
+        title="Editar boleta"
+        description="Actualiza solo lo que necesites; los cambios se guardan en la API."
+      />
 
       <Card
         title={ticket.title}

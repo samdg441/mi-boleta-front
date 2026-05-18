@@ -2,15 +2,42 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import {
+  LayoutDashboard,
+  LogOut,
+  PlusCircle,
+  Shield,
+  Ticket,
+} from "lucide-react";
 import { useAuthStore } from "@/presentation/stores/auth-store";
 import { Button } from "@/presentation/components/ui/button";
 
 const links = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/tickets", label: "Mis boletas" },
-  { href: "/tickets/new", label: "Nueva boleta" },
-  { href: "/admin", label: "Administración" },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/tickets", label: "Mis boletas", icon: Ticket },
+  { href: "/tickets/new", label: "Nueva boleta", icon: PlusCircle },
+  { href: "/admin", label: "Administración", icon: Shield },
 ] as const;
+
+function isNavActive(href: string, pathname: string): boolean {
+  if (href === "/tickets/new") return pathname === "/tickets/new";
+  if (href === "/tickets") {
+    if (pathname === "/tickets/new") return false;
+    return pathname === "/tickets" || pathname.startsWith("/tickets/");
+  }
+  if (href === "/admin") return pathname === "/admin" || pathname.startsWith("/admin/");
+  if (href === "/dashboard") {
+    return pathname === "/dashboard" || pathname.startsWith("/dashboard/");
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  const a = parts[0]?.[0] ?? "?";
+  const b = parts.length > 1 ? parts[parts.length - 1]?.[0] : "";
+  return `${a}${b}`.toUpperCase();
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,44 +51,74 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="border-b border-slate-800 bg-brand-navy text-white">
+    <div className="relative min-h-screen bg-brand-cream bg-mesh-light text-slate-900">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-brand-navy/95 shadow-soft backdrop-blur-md">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-400/50 to-transparent" />
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <Link href="/dashboard" className="text-lg font-bold tracking-tight">
-              Mi Boleta
-            </Link>
-            <p className="text-sm text-slate-300">
-              {user?.name} · {user?.email}
-            </p>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 shadow-lg shadow-orange-900/40 ring-2 ring-white/10">
+              <Ticket className="h-5 w-5 text-white" strokeWidth={2.2} aria-hidden />
+            </div>
+            <div className="min-w-0">
+              <Link
+                href="/dashboard"
+                className="text-lg font-extrabold tracking-tight text-white hover:text-orange-100"
+              >
+                Mi Boleta
+              </Link>
+              <p className="truncate text-sm text-slate-400">{user?.name}</p>
+              <p className="truncate text-xs text-slate-500">{user?.email}</p>
+            </div>
           </div>
-          <nav className="flex flex-wrap items-center gap-2">
-            {links.map((l) => {
-              if (l.href === "/admin" && user?.role !== "admin") return null;
-              const active = pathname === l.href || pathname.startsWith(`${l.href}/`);
-              return (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
-                    active ? "bg-white/10 text-white" : "text-slate-200 hover:bg-white/5"
-                  }`}
-                >
-                  {l.label}
-                </Link>
-              );
-            })}
-            <Button
-              variant="secondary"
-              className="!bg-brand-primary !text-white hover:!bg-brand-primary-hover"
-              onClick={logout}
-            >
-              Salir
-            </Button>
-          </nav>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <nav className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-white/10 bg-white/5 p-1.5 shadow-innerGlow backdrop-blur-sm">
+              {links.map((l) => {
+                if (l.href === "/admin" && user?.role !== "admin") return null;
+                const Icon = l.icon;
+                const active = isNavActive(l.href, pathname);
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
+                      active
+                        ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md shadow-orange-900/30"
+                        : "text-slate-200 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                    <span className="hidden sm:inline">{l.label}</span>
+                    <span className="sm:hidden">{l.label.split(" ")[0]}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="flex items-center gap-3 sm:pl-1">
+              <div
+                className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-xs font-bold text-white sm:flex"
+                title={user?.name}
+              >
+                {user?.name ? initials(user.name) : "?"}
+              </div>
+              <Button
+                variant="ghost"
+                className="gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-slate-100 hover:bg-white/10 hover:text-white"
+                onClick={logout}
+              >
+                <LogOut className="h-4 w-4" aria-hidden />
+                <span className="hidden sm:inline">Salir</span>
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+
+      <main className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="pointer-events-none absolute inset-x-0 -top-24 mx-auto h-48 max-w-3xl rounded-full bg-orange-400/10 blur-3xl" />
+        <div className="relative">{children}</div>
+      </main>
     </div>
   );
 }

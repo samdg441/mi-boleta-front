@@ -10,6 +10,8 @@ import { Card } from "@/presentation/components/ui/card";
 import { Button } from "@/presentation/components/ui/button";
 import { Spinner } from "@/presentation/components/ui/feedback";
 import { FieldError } from "@/presentation/components/ui/field";
+import { FileText } from "lucide-react";
+import { PageHeader } from "@/presentation/components/layout/page-header";
 import { formatShortDate } from "@/presentation/lib/date";
 
 export default function TicketDetailPage() {
@@ -73,31 +75,33 @@ export default function TicketDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <FieldError message={deleteError ?? undefined} />
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">{ticket.title}</h1>
-          <p className="text-sm text-slate-600">Detalle de tu registro</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/tickets"
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-          >
-            Volver
-          </Link>
-          <Link
-            href={`/tickets/${ticket.id}/edit`}
-            className="rounded-lg bg-brand-primary px-4 py-2 text-sm font-semibold text-white hover:bg-brand-primary-hover"
-          >
-            Editar
-          </Link>
-          <Button variant="danger" onClick={onDelete}>
-            Eliminar
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        badge="Detalle"
+        icon={FileText}
+        title={ticket.title}
+        description="Información completa de tu registro."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/tickets"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 shadow-sm transition hover:bg-slate-50"
+            >
+              Volver
+            </Link>
+            <Link
+              href={`/tickets/${ticket.id}/edit`}
+              className="rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-500/25 transition hover:from-orange-600 hover:to-orange-700"
+            >
+              Editar
+            </Link>
+            <Button variant="danger" onClick={onDelete}>
+              Eliminar
+            </Button>
+          </div>
+        }
+      />
 
       <Card title="Información">
         <dl className="grid gap-4 sm:grid-cols-2">
