@@ -115,7 +115,7 @@ export default function DashboardPage() {
           label="Próximos sorteos"
           value={String(stats.upcoming.length)}
           icon={CalendarClock}
-          accent="from-orange-500 to-amber-500"
+          accent="from-brand-primary to-brand-glow"
         />
         <StatCard
           label="Pendientes"

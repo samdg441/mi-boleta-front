@@ -16,15 +16,16 @@ export function AuthSplitLayout({
         <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-orange-500/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
 
-        <div className="relative">
+        <div className="relative pt-16 lg:pt-24 xl:pt-28">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-orange-200/90 backdrop-blur-md">
-            <Sparkles className="h-3.5 w-3.5 text-amber-300" aria-hidden />
+            <Sparkles className="h-3.5 w-3.5 shrink-0 text-orange-300" aria-hidden />
             Tu suerte, organizada
           </div>
-          <h1 className="mt-8 max-w-md text-balance text-4xl font-extrabold leading-tight tracking-tight">
+          <h1 className="mt-10 max-w-lg text-balance text-5xl font-extrabold leading-[1.08] tracking-tight lg:mt-12 lg:text-6xl xl:text-[3.5rem]">
             Nunca más preguntes &ldquo;¿y si sí me lo gané?&rdquo;
           </h1>
-          <p className="mt-4 max-w-sm text-pretty text-sm leading-relaxed text-slate-300">
+          
+          <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-slate-300">
             Centraliza rifas, loterías y sorteos. Fechas claras, estados al día y un panel que te
             dice qué sigue.
           </p>
@@ -35,14 +36,14 @@ export function AuthSplitLayout({
             <Ticket className="h-7 w-7 text-white" strokeWidth={2} aria-hidden />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Mi Boleta</p>
-            <p className="text-xs text-slate-400">Frontend conectado a tu API REST</p>
+            <p className="text-m font-semibold text-white">Mi Boleta</p>
+            <p className="text-s text-slate-400">Frontend conectado a tu API REST</p>
           </div>
         </div>
       </aside>
 
       <div className="relative flex min-h-screen flex-col justify-center bg-brand-cream bg-mesh-light px-4 py-12 sm:px-8">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(249,115,22,0.06),transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(240,70,35,0.06),transparent_55%)]" />
         <div className="relative mx-auto w-full max-w-md">
           <div className="mb-8 text-center lg:hidden">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 shadow-lg shadow-orange-500/25">

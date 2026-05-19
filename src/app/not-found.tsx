@@ -9,7 +9,7 @@ export default function NotFound() {
       <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-[28rem] -translate-x-1/2 rounded-full bg-orange-400/20 blur-3xl" />
 
       <div className="relative rounded-3xl border border-slate-200/80 bg-white/85 px-8 py-12 shadow-lift backdrop-blur-xl sm:max-w-lg sm:px-12">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 shadow-lg shadow-orange-500/30">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-primary to-brand-glow shadow-lg shadow-orange-500/30">
           <Ticket className="h-8 w-8 text-white" strokeWidth={2} aria-hidden />
         </div>
         <p className="text-xs font-extrabold uppercase tracking-[0.35em] text-orange-600">404</p>
