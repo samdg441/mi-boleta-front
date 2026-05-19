@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RotateCcw, Shield } from "lucide-react";
 import { adminTicketRepository } from "@/infrastructure/di/container";
 import type { AdminTicket } from "@/domain/entities/ticket";
 import { ApiError } from "@/infrastructure/http/api-error";
 import { PageHeader } from "@/presentation/components/layout/page-header";
+import { DashboardStatsRow } from "@/presentation/components/dashboard/dashboard-stats-row";
+import { AdminStatisticsPanel } from "@/presentation/components/admin/admin-statistics-panel";
 import { Card } from "@/presentation/components/ui/card";
 import { Button } from "@/presentation/components/ui/button";
 import { FieldError, FieldLabel, SelectInput, TextInput } from "@/presentation/components/ui/field";
@@ -15,6 +17,9 @@ import { GAME_TYPES, TICKET_STATUSES } from "@/presentation/constants/ticket-opt
 import { LIST_PAGE_SIZE } from "@/presentation/constants/pagination";
 import { buildAdminSearchQuery } from "@/presentation/lib/admin-search";
 import { formatShortDate } from "@/presentation/lib/date";
+import { computeTicketStats } from "@/presentation/lib/ticket-stats";
+import { computeAdminAnalytics } from "@/presentation/lib/admin-analytics";
+import { loadAllAdminTickets } from "@/presentation/hooks/load-all-admin-tickets";
 
 type Filters = {
   gameNumber: string;
@@ -29,6 +34,13 @@ const emptyFilters: Filters = {
   status: "",
   gameType: "",
 };
+
+const adminStatLabels = {
+  total: "Boletas en el sistema",
+  upcoming: "Próximos sorteos",
+  pending: "Pendientes",
+  history: "En historial",
+} as const;
 
 function StatusBadge({ status }: { status: string }) {
   const styles =
@@ -49,6 +61,11 @@ export default function AdminTicketsPage() {
   const [applied, setApplied] = useState<Filters>(emptyFilters);
   const [page, setPage] = useState(1);
 
+  const [metricsLoading, setMetricsLoading] = useState(true);
+  const [metricsError, setMetricsError] = useState<string | null>(null);
+  const [allTickets, setAllTickets] = useState<AdminTicket[]>([]);
+  const [metricsTotal, setMetricsTotal] = useState(0);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [rows, setRows] = useState<AdminTicket[]>([]);
@@ -58,6 +75,30 @@ export default function AdminTicketsPage() {
     page: 1,
     pageSize: LIST_PAGE_SIZE,
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        setMetricsLoading(true);
+        setMetricsError(null);
+        const res = await loadAllAdminTickets();
+        if (cancelled) return;
+        setAllTickets(res.tickets);
+        setMetricsTotal(res.total);
+      } catch (e) {
+        if (cancelled) return;
+        const msg =
+          e instanceof ApiError ? e.message : "No se pudieron cargar las métricas globales.";
+        setMetricsError(msg);
+      } finally {
+        if (!cancelled) setMetricsLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -78,7 +119,7 @@ export default function AdminTicketsPage() {
       } catch (e) {
         if (cancelled) return;
         const msg =
-          e instanceof ApiError ? e.message : "No se pudo cargar la vista de administrador.";
+          e instanceof ApiError ? e.message : "No se pudo cargar el listado.";
         setError(msg);
       } finally {
         if (!cancelled) setLoading(false);
@@ -88,6 +129,13 @@ export default function AdminTicketsPage() {
       cancelled = true;
     };
   }, [applied, page]);
+
+  const ticketStats = useMemo(
+    () => computeTicketStats(allTickets, metricsTotal),
+    [allTickets, metricsTotal],
+  );
+
+  const analytics = useMemo(() => computeAdminAnalytics(allTickets), [allTickets]);
 
   function applyFilters(e: React.FormEvent) {
     e.preventDefault();
@@ -107,11 +155,32 @@ export default function AdminTicketsPage() {
         accent="violet"
         icon={Shield}
         badge="Área restringida"
-        title="Administración de premios"
-        description="Consulta todos los tickets del sistema. Busca por número jugado o por nombre del dueño / sorteo, filtra por estado y tipo, y navega con paginación."
+        title="Panel de administración"
+        description="Consulta métricas globales, estadísticas del sistema y filtra todas las boletas. Solo lectura: no puedes crear ni editar registros."
       />
 
-      <Card title="Buscar y filtrar">
+      {metricsLoading ? (
+        <Spinner label="Cargando métricas globales…" />
+      ) : metricsError ? (
+        <Card title="Resumen">
+          <p className="text-sm font-medium text-red-600">{metricsError}</p>
+        </Card>
+      ) : (
+        <>
+          <DashboardStatsRow
+            labels={adminStatLabels}
+            counts={{
+              totalRegistered: ticketStats.totalRegistered,
+              upcoming: ticketStats.upcoming.length,
+              pending: ticketStats.pending.length,
+              history: ticketStats.history.length,
+            }}
+          />
+          <AdminStatisticsPanel analytics={analytics} />
+        </>
+      )}
+
+      <Card title="Buscar y filtrar registros">
         <form className="grid gap-4 md:grid-cols-2" onSubmit={applyFilters}>
           <div>
             <FieldLabel htmlFor="gameNumber">Buscar por número</FieldLabel>
@@ -176,9 +245,9 @@ export default function AdminTicketsPage() {
         ) : null}
       </Card>
 
-      <Card title="Resultados globales">
+      <Card title="Registros del sistema">
         {loading ? (
-          <Spinner label="Cargando tickets…" />
+          <Spinner label="Cargando listado…" />
         ) : rows.length === 0 ? (
           <EmptyState
             title="Sin resultados"

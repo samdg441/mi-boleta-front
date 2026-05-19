@@ -21,11 +21,16 @@ export function AuthSplitLayout({
             <Sparkles className="h-3.5 w-3.5 shrink-0 text-orange-300" aria-hidden />
             Tu suerte, organizada
           </div>
-          <h1 className="mt-10 max-w-lg text-balance text-5xl font-extrabold leading-[1.08] tracking-tight lg:mt-12 lg:text-6xl xl:text-[3.5rem]">
-            Nunca más preguntes &ldquo;¿y si sí me lo gané?&rdquo;
+          <h1 className="mt-10 max-w-xl space-y-4 font-extrabold tracking-tight lg:mt-12 lg:space-y-5">
+            <span className="block text-[2.65rem] leading-[1.1] text-white lg:text-6xl lg:leading-[1.08]">
+              Nunca más preguntes
+            </span>
+            <span className="block text-[2.15rem] leading-[1.12] text-orange-200 lg:text-[2.65rem] lg:leading-[1.1]">
+              <span className="whitespace-nowrap">&ldquo;¿y si sí me lo gané?&rdquo;</span>
+            </span>
           </h1>
-          
-          <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-slate-300">
+
+          <p className="mt-6 max-w-md text-pretty text-base leading-relaxed text-slate-300 lg:mt-7">
             Centraliza rifas, loterías y sorteos. Fechas claras, estados al día y un panel que te
             dice qué sigue.
           </p>
@@ -36,8 +41,8 @@ export function AuthSplitLayout({
             <Ticket className="h-7 w-7 text-white" strokeWidth={2} aria-hidden />
           </div>
           <div>
-            <p className="text-m font-semibold text-white">Mi Boleta</p>
-            <p className="text-s text-slate-400">Frontend conectado a tu API REST</p>
+            <p className="text-sm font-semibold text-white">Mi Boleta</p>
+            <p className="text-xs text-slate-400">Frontend conectado a tu API REST</p>
           </div>
         </div>
       </aside>

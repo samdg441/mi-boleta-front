@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  BarChart3,
   LayoutDashboard,
   LogOut,
   PlusCircle,
@@ -13,11 +14,15 @@ import { useAuthStore } from "@/presentation/stores/auth-store";
 import { getHomePathForUser } from "@/presentation/lib/auth-routes";
 import { Button } from "@/presentation/components/ui/button";
 
-const links = [
+const userLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/tickets", label: "Mis boletas", icon: Ticket },
   { href: "/tickets/new", label: "Nueva boleta", icon: PlusCircle },
-  { href: "/admin", label: "Administración", icon: Shield },
+] as const;
+
+const adminLinks = [
+  { href: "/admin", label: "Panel admin", icon: Shield },
+  { href: "/admin#estadisticas", label: "Estadísticas", icon: BarChart3 },
 ] as const;
 
 function isNavActive(href: string, pathname: string): boolean {
@@ -26,7 +31,9 @@ function isNavActive(href: string, pathname: string): boolean {
     if (pathname === "/tickets/new") return false;
     return pathname === "/tickets" || pathname.startsWith("/tickets/");
   }
-  if (href === "/admin") return pathname === "/admin" || pathname.startsWith("/admin/");
+  if (href === "/admin" || href.startsWith("/admin#")) {
+    return pathname === "/admin" || pathname.startsWith("/admin/");
+  }
   if (href === "/dashboard") {
     return pathname === "/dashboard" || pathname.startsWith("/dashboard/");
   }
@@ -46,6 +53,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const user = useAuthStore((s) => s.user);
   const clearSession = useAuthStore((s) => s.clearSession);
   const homePath = getHomePathForUser(user);
+  const links = user?.role === "admin" ? adminLinks : userLinks;
 
   function logout() {
     clearSession();
@@ -76,7 +84,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <nav className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-white/10 bg-white/5 p-1.5 shadow-innerGlow backdrop-blur-sm">
               {links.map((l) => {
-                if (l.href === "/admin" && user?.role !== "admin") return null;
                 const Icon = l.icon;
                 const active = isNavActive(l.href, pathname);
                 return (
