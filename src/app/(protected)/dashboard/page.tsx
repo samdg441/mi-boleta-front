@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   CalendarClock,
   ClipboardList,
@@ -19,6 +20,8 @@ import { Button } from "@/presentation/components/ui/button";
 import { GradientLink } from "@/presentation/components/ui/gradient-link";
 import { PageHeader } from "@/presentation/components/layout/page-header";
 import { formatShortDate } from "@/presentation/lib/date";
+import { useAuthStore } from "@/presentation/stores/auth-store";
+import { useAuthHydration } from "@/presentation/hooks/use-auth-hydration";
 
 function computeStats(tickets: Ticket[], totalFromApi: number) {
   const now = Date.now();
@@ -33,6 +36,15 @@ function computeStats(tickets: Ticket[], totalFromApi: number) {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const user = useAuthStore((s) => s.user);
+  const hydrated = useAuthHydration();
+
+  useEffect(() => {
+    if (!hydrated) return;
+    if (user?.role === "admin") router.replace("/admin");
+  }, [hydrated, user, router]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tickets, setTickets] = useState<Ticket[]>([]);

@@ -12,6 +12,7 @@ import { loginSchema } from "@/presentation/validation/forms";
 import type { z } from "zod";
 import { useAuthStore } from "@/presentation/stores/auth-store";
 import { useAuthHydration } from "@/presentation/hooks/use-auth-hydration";
+import { getHomePathForUser } from "@/presentation/lib/auth-routes";
 import { AuthSplitLayout } from "@/presentation/components/layout/auth-split-layout";
 import { Button } from "@/presentation/components/ui/button";
 import { FieldError, FieldLabel, TextInput } from "@/presentation/components/ui/field";
@@ -22,6 +23,7 @@ export default function LoginPage() {
   const router = useRouter();
   const setSession = useAuthStore((s) => s.setSession);
   const token = useAuthStore((s) => s.token);
+  const user = useAuthStore((s) => s.user);
   const hydrated = useAuthHydration();
 
   const form = useForm<FormValues>({
@@ -31,14 +33,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!hydrated) return;
-    if (token) router.replace("/dashboard");
-  }, [hydrated, token, router]);
+    if (token) router.replace(getHomePathForUser(user));
+  }, [hydrated, token, user, router]);
 
   async function onSubmit(values: FormValues) {
     try {
       const session = await authRepository.login(values);
       setSession(session.token, session.user);
-      router.replace("/dashboard");
+      router.replace(getHomePathForUser(session.user));
     } catch (e) {
       if (e instanceof ApiError) {
         form.setError("root", { message: e.message });

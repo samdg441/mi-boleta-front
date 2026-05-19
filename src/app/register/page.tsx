@@ -12,6 +12,7 @@ import { ApiError } from "@/infrastructure/http/api-error";
 import { registerSchema } from "@/presentation/validation/forms";
 import { useAuthStore } from "@/presentation/stores/auth-store";
 import { useAuthHydration } from "@/presentation/hooks/use-auth-hydration";
+import { getHomePathForUser } from "@/presentation/lib/auth-routes";
 import { AuthSplitLayout } from "@/presentation/components/layout/auth-split-layout";
 import { Button } from "@/presentation/components/ui/button";
 import { FieldError, FieldLabel, TextInput } from "@/presentation/components/ui/field";
@@ -22,6 +23,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const setSession = useAuthStore((s) => s.setSession);
   const token = useAuthStore((s) => s.token);
+  const user = useAuthStore((s) => s.user);
   const hydrated = useAuthHydration();
 
   const form = useForm<FormValues>({
@@ -31,8 +33,8 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (!hydrated) return;
-    if (token) router.replace("/dashboard");
-  }, [hydrated, token, router]);
+    if (token) router.replace(getHomePathForUser(user));
+  }, [hydrated, token, user, router]);
 
   async function onSubmit(values: FormValues) {
     try {
@@ -42,7 +44,7 @@ export default function RegisterPage() {
         password: values.password,
       });
       setSession(session.token, session.user);
-      router.replace("/dashboard");
+      router.replace(getHomePathForUser(session.user));
     } catch (e) {
       if (e instanceof ApiError) {
         if (e.status === 409) {

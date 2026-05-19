@@ -10,6 +10,7 @@ import {
   Ticket,
 } from "lucide-react";
 import { useAuthStore } from "@/presentation/stores/auth-store";
+import { getHomePathForUser } from "@/presentation/lib/auth-routes";
 import { Button } from "@/presentation/components/ui/button";
 
 const links = [
@@ -44,6 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const clearSession = useAuthStore((s) => s.clearSession);
+  const homePath = getHomePathForUser(user);
 
   function logout() {
     clearSession();
@@ -61,7 +63,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <div className="min-w-0">
               <Link
-                href="/dashboard"
+                href={homePath}
                 className="text-lg font-extrabold tracking-tight text-white hover:text-orange-100"
               >
                 Mi Boleta
