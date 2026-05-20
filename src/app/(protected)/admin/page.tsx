@@ -46,10 +46,10 @@ const adminStatLabels = {
 function StatusBadge({ status }: { status: string }) {
   const styles =
     status === "Ganado"
-      ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+      ? "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-700/50"
       : status === "Perdido"
-        ? "bg-red-50 text-red-800 border-red-200"
-        : "bg-amber-50 text-amber-800 border-amber-200";
+        ? "bg-red-50 text-red-800 border-red-200 dark:bg-red-950/60 dark:text-red-300 dark:border-red-700/50"
+        : "bg-amber-50 text-amber-900 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-700/50";
   return (
     <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-bold ${styles}`}>
       {status}
@@ -241,7 +241,7 @@ export default function AdminTicketsPage() {
           </div>
         </form>
         {error ? (
-          <div className="mt-4 rounded-xl border border-red-100 bg-red-50/70 px-3 py-2">
+          <div className="mt-4 rounded-xl border border-red-100 bg-red-50/70 px-3 py-2 dark:border-red-900/50 dark:bg-red-950/40">
             <FieldError message={error} />
           </div>
         ) : null}
@@ -260,7 +260,7 @@ export default function AdminTicketsPage() {
             <div className="overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800">
               <div className="overflow-x-auto">
                 <table className="min-w-full text-left text-sm">
-                  <thead className="bg-slate-50/90 text-xs font-bold uppercase tracking-wider text-slate-500 dark:bg-slate-800/90 dark:text-slate-400">
+                  <thead className="bg-slate-50/90 text-xs font-bold uppercase tracking-wider text-slate-500 dark:bg-slate-800/90 dark:text-slate-300">
                     <tr>
                       <th className="px-4 py-3">Sorteo</th>
                       <th className="px-4 py-3">Número</th>

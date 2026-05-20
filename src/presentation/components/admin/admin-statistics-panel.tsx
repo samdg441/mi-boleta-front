@@ -33,7 +33,7 @@ function DistributionBars({
     <ul className="space-y-3">
       {rows.map((row) => (
         <li key={row.label}>
-          <motion className="mb-1 flex items-center justify-between gap-2 text-sm">
+          <div className="mb-1 flex items-center justify-between gap-2 text-sm">
             <span
               className={`font-semibold ${
                 labelClass?.(row.label) ?? "text-slate-800 dark:text-slate-200"
@@ -45,7 +45,7 @@ function DistributionBars({
               {row.count}{" "}
               <span className="text-slate-500 dark:text-slate-400">({row.percent}%)</span>
             </span>
-          </motion>
+          </div>
           <div className="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700/80">
             <div
               className={`h-full rounded-full transition-all ${barClass?.(row.label) ?? "bg-violet-500"}`}
@@ -60,7 +60,7 @@ function DistributionBars({
 
 export function AdminStatisticsPanel({ analytics }: { analytics: AdminAnalytics }) {
   return (
-    <motion id="estadisticas" className="scroll-mt-24">
+    <div id="estadisticas" className="scroll-mt-24">
       <Card title="Estadísticas del sistema">
         <p className="mb-6 text-sm text-slate-600 dark:text-slate-400">
           Resumen global calculado sobre todas las boletas registradas. Las gráficas avanzadas
@@ -70,9 +70,9 @@ export function AdminStatisticsPanel({ analytics }: { analytics: AdminAnalytics 
         <div className="mb-8 grid gap-4 sm:grid-cols-3">
           <div className="rounded-2xl border border-violet-100 bg-violet-50/50 p-4 dark:border-violet-500/30 dark:bg-violet-950/50">
             <div className="flex items-center gap-3">
-              <motion className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-white">
                 <Users className="h-5 w-5" aria-hidden />
-              </motion>
+              </div>
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-violet-800 dark:text-violet-300">
                   Usuarios con boletas
@@ -101,8 +101,8 @@ export function AdminStatisticsPanel({ analytics }: { analytics: AdminAnalytics 
                   </p>
                 ) : null}
               </div>
-            </motion>
-          </motion>
+            </div>
+          </div>
           <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-600 dark:bg-slate-800/70">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-700 text-white dark:bg-slate-600">
@@ -143,6 +143,6 @@ export function AdminStatisticsPanel({ analytics }: { analytics: AdminAnalytics 
           </div>
         </div>
       </Card>
-    </motion>
+    </div>
   );
 }

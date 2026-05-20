@@ -18,16 +18,20 @@ export function PaginationBar({
   const to = Math.min(page * pageSize, total);
 
   return (
-    <footer className="mt-4 flex flex-col gap-3 border-t border-slate-100 pt-4 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="mt-4 flex flex-col gap-3 border-t border-slate-100 pt-4 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
       <p>
         {total === 0 ? (
           "Sin registros"
         ) : (
           <>
-            Mostrando <span className="font-semibold text-slate-800">{from}–{to}</span> de{" "}
-            <span className="font-semibold text-slate-800">{total}</span> · Página{" "}
-            <span className="font-semibold text-slate-800">{page}</span> de{" "}
-            <span className="font-semibold text-slate-800">{totalPages}</span>
+            Mostrando{" "}
+            <span className="font-semibold text-slate-800 dark:text-slate-200">
+              {from}–{to}
+            </span>{" "}
+            de <span className="font-semibold text-slate-800 dark:text-slate-200">{total}</span> ·
+            Página <span className="font-semibold text-slate-800 dark:text-slate-200">{page}</span>{" "}
+            de{" "}
+            <span className="font-semibold text-slate-800 dark:text-slate-200">{totalPages}</span>
           </>
         )}
       </p>
