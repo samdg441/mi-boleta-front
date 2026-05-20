@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Sparkles, Ticket } from "lucide-react";
+import { ThemeToggle } from "@/presentation/components/ui/theme-toggle";
 
 export function AuthSplitLayout({
   title,
@@ -47,8 +48,11 @@ export function AuthSplitLayout({
         </div>
       </aside>
 
-      <div className="relative flex min-h-screen flex-col justify-center bg-brand-cream bg-mesh-light px-4 py-12 sm:px-8">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(240,70,35,0.06),transparent_55%)]" />
+      <div className="relative flex min-h-screen flex-col justify-center bg-brand-cream bg-mesh-light px-4 py-12 dark:bg-slate-950 dark:bg-mesh-dark sm:px-8">
+        <div className="absolute right-4 top-4 z-10 sm:right-8 sm:top-8">
+          <ThemeToggle variant="auth" />
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(240,70,35,0.06),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(240,70,35,0.04),transparent_55%)]" />
         <div className="relative mx-auto w-full max-w-md">
           <div className="mb-8 text-center lg:hidden">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 shadow-lg shadow-orange-500/25">
@@ -57,10 +61,14 @@ export function AuthSplitLayout({
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600/90">Mi Boleta</p>
           </div>
 
-          <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-8 shadow-lift shadow-slate-900/5 backdrop-blur-xl sm:p-10">
+          <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-8 shadow-lift shadow-slate-900/5 backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-900/90 dark:shadow-slate-950/40 sm:p-10">
             <div className="mb-8 text-center lg:text-left">
-              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">{title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{subtitle}</p>
+              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+                {title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {subtitle}
+              </p>
             </div>
             {children}
           </div>

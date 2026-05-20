@@ -13,6 +13,7 @@ import { FieldError } from "@/presentation/components/ui/field";
 import { FileText } from "lucide-react";
 import { PageHeader } from "@/presentation/components/layout/page-header";
 import { formatShortDate } from "@/presentation/lib/date";
+import { notifyApiError, notifyTicketDeleted } from "@/presentation/lib/toast";
 
 export default function TicketDetailPage() {
   const params = useParams<{ id: string }>();
@@ -54,11 +55,13 @@ export default function TicketDetailPage() {
     setDeleteError(null);
     try {
       await ticketRepository.delete(ticket.id);
+      notifyTicketDeleted();
       router.replace("/tickets");
       router.refresh();
     } catch (e) {
       const msg = e instanceof ApiError ? e.message : "No se pudo eliminar.";
       setDeleteError(msg);
+      notifyApiError(msg);
     }
   }
 

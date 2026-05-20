@@ -16,6 +16,7 @@ import { getHomePathForUser } from "@/presentation/lib/auth-routes";
 import { AuthSplitLayout } from "@/presentation/components/layout/auth-split-layout";
 import { Button } from "@/presentation/components/ui/button";
 import { FieldError, FieldLabel, TextInput } from "@/presentation/components/ui/field";
+import { notifyApiError, notifyRegister } from "@/presentation/lib/toast";
 
 type FormValues = z.infer<typeof registerSchema>;
 
@@ -44,17 +45,22 @@ export default function RegisterPage() {
         password: values.password,
       });
       setSession(session.token, session.user);
+      notifyRegister();
       router.replace(getHomePathForUser(session.user));
     } catch (e) {
       if (e instanceof ApiError) {
         if (e.status === 409) {
           form.setError("email", { message: e.message });
+          notifyApiError(e.message);
           return;
         }
         form.setError("root", { message: e.message });
+        notifyApiError(e.message);
         return;
       }
-      form.setError("root", { message: "No se pudo completar el registro." });
+      const msg = "No se pudo completar el registro.";
+      form.setError("root", { message: msg });
+      notifyApiError(msg);
     }
   }
 
@@ -86,7 +92,7 @@ export default function RegisterPage() {
         </div>
 
         {form.formState.errors.root?.message ? (
-          <div className="rounded-xl border border-red-100 bg-red-50/70 px-3 py-2">
+          <div className="rounded-xl border border-red-100 bg-red-50/70 px-3 py-2 dark:border-red-900/50 dark:bg-red-950/40">
             <FieldError message={form.formState.errors.root.message} />
           </div>
         ) : null}
@@ -97,7 +103,7 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-slate-600">
+      <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
         ¿Ya tienes cuenta?{" "}
         <Link
           className="font-bold text-orange-600 underline decoration-orange-200 underline-offset-4 hover:text-orange-700"

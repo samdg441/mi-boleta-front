@@ -12,6 +12,7 @@ import { ApiError } from "@/infrastructure/http/api-error";
 import { Card } from "@/presentation/components/ui/card";
 import { FieldError } from "@/presentation/components/ui/field";
 import { Spinner } from "@/presentation/components/ui/feedback";
+import { notifyApiError, notifyTicketUpdated } from "@/presentation/lib/toast";
 
 export default function EditTicketPage() {
   const params = useParams<{ id: string }>();
@@ -81,12 +82,14 @@ export default function EditTicketPage() {
             setServerError(null);
             try {
               await ticketRepository.update(ticket.id, payload);
+              notifyTicketUpdated(payload.title);
               router.replace(`/tickets/${ticket.id}`);
               router.refresh();
             } catch (e) {
               const msg =
                 e instanceof ApiError ? e.message : "No se pudo actualizar la boleta.";
               setServerError(msg);
+              notifyApiError(msg);
             }
           }}
         />

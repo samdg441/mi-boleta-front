@@ -16,6 +16,7 @@ const brandOrange = {
 };
 
 const config: Config = {
+  darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
@@ -48,6 +49,8 @@ const config: Config = {
           "radial-gradient(at 40% 20%, rgba(239, 74, 41, 0.12) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(240, 70, 35, 0.1) 0px, transparent 45%), radial-gradient(at 0% 50%, rgba(59, 130, 246, 0.08) 0px, transparent 50%)",
         "mesh-auth":
           "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(240, 70, 35, 0.25), transparent), radial-gradient(ellipse 60% 80% at 80% 20%, rgba(59, 130, 246, 0.12), transparent), linear-gradient(165deg, #0c1222 0%, #151d33 45%, #0f172a 100%)",
+        "mesh-dark":
+          "radial-gradient(at 40% 20%, rgba(240, 70, 35, 0.08) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(240, 70, 35, 0.06) 0px, transparent 45%), radial-gradient(at 0% 50%, rgba(59, 130, 246, 0.05) 0px, transparent 50%)",
       },
     },
   },

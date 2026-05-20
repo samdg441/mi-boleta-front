@@ -16,6 +16,7 @@ import { getHomePathForUser } from "@/presentation/lib/auth-routes";
 import { AuthSplitLayout } from "@/presentation/components/layout/auth-split-layout";
 import { Button } from "@/presentation/components/ui/button";
 import { FieldError, FieldLabel, TextInput } from "@/presentation/components/ui/field";
+import { notifyApiError, notifyLogin } from "@/presentation/lib/toast";
 
 type FormValues = z.infer<typeof loginSchema>;
 
@@ -40,13 +41,17 @@ export default function LoginPage() {
     try {
       const session = await authRepository.login(values);
       setSession(session.token, session.user);
+      notifyLogin();
       router.replace(getHomePathForUser(session.user));
     } catch (e) {
       if (e instanceof ApiError) {
         form.setError("root", { message: e.message });
+        notifyApiError(e.message);
         return;
       }
-      form.setError("root", { message: "No se pudo iniciar sesión. Intenta de nuevo." });
+      const msg = "No se pudo iniciar sesión. Intenta de nuevo.";
+      form.setError("root", { message: msg });
+      notifyApiError(msg);
     }
   }
 
@@ -70,7 +75,7 @@ export default function LoginPage() {
         </div>
 
         {form.formState.errors.root?.message ? (
-          <div className="rounded-xl border border-red-100 bg-red-50/70 px-3 py-2">
+          <div className="rounded-xl border border-red-100 bg-red-50/70 px-3 py-2 dark:border-red-900/50 dark:bg-red-950/40">
             <FieldError message={form.formState.errors.root.message} />
           </div>
         ) : null}
@@ -81,7 +86,7 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-slate-600">
+      <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
         ¿No tienes cuenta?{" "}
         <Link
           className="font-bold text-orange-600 underline decoration-orange-200 underline-offset-4 hover:text-orange-700"

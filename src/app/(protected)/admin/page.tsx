@@ -20,6 +20,7 @@ import { formatShortDate } from "@/presentation/lib/date";
 import { computeTicketStats } from "@/presentation/lib/ticket-stats";
 import { computeAdminAnalytics } from "@/presentation/lib/admin-analytics";
 import { loadAllAdminTickets } from "@/presentation/hooks/load-all-admin-tickets";
+import { toast } from "@/presentation/lib/toast";
 
 type Filters = {
   gameNumber: string;
@@ -141,6 +142,7 @@ export default function AdminTicketsPage() {
     e.preventDefault();
     setApplied(draft);
     setPage(1);
+    toast.success("Filtros aplicados");
   }
 
   function clearFilters() {
@@ -255,10 +257,10 @@ export default function AdminTicketsPage() {
           />
         ) : (
           <>
-            <div className="overflow-hidden rounded-2xl border border-slate-100">
+            <div className="overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800">
               <div className="overflow-x-auto">
                 <table className="min-w-full text-left text-sm">
-                  <thead className="bg-slate-50/90 text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <thead className="bg-slate-50/90 text-xs font-bold uppercase tracking-wider text-slate-500 dark:bg-slate-800/90 dark:text-slate-400">
                     <tr>
                       <th className="px-4 py-3">Sorteo</th>
                       <th className="px-4 py-3">Número</th>
@@ -268,24 +270,26 @@ export default function AdminTicketsPage() {
                       <th className="px-4 py-3">Fecha sorteo</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 bg-white">
+                  <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
                     {rows.map((t) => (
-                      <tr key={t.id} className="transition hover:bg-violet-50/40">
+                      <tr key={t.id} className="transition hover:bg-violet-50/40 dark:hover:bg-violet-950/30">
                         <td className="px-4 py-3">
-                          <p className="font-semibold text-slate-900">{t.title}</p>
+                          <p className="font-semibold text-slate-900 dark:text-slate-100">{t.title}</p>
                         </td>
-                        <td className="px-4 py-3 font-mono text-slate-700">
+                        <td className="px-4 py-3 font-mono text-slate-700 dark:text-slate-300">
                           {t.gameNumber ?? "—"}
                         </td>
-                        <td className="px-4 py-3 text-slate-700">
+                        <td className="px-4 py-3 text-slate-700 dark:text-slate-300">
                           <p className="font-medium">{t.owner.name}</p>
-                          <p className="text-xs text-slate-500">{t.owner.email}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{t.owner.email}</p>
                         </td>
-                        <td className="px-4 py-3 text-slate-700">{t.gameType}</td>
+                        <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{t.gameType}</td>
                         <td className="px-4 py-3">
                           <StatusBadge status={t.status} />
                         </td>
-                        <td className="px-4 py-3 text-slate-700">{formatShortDate(t.gameDate)}</td>
+                        <td className="px-4 py-3 text-slate-700 dark:text-slate-300">
+                          {formatShortDate(t.gameDate)}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

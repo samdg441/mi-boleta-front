@@ -132,14 +132,14 @@ function TicketList({
       {items.map((t) => (
         <li
           key={t.id}
-          className="flex flex-col gap-2 py-4 transition hover:bg-orange-50/40 sm:flex-row sm:items-center sm:justify-between sm:px-2"
+          className="flex flex-col gap-2 py-4 transition hover:bg-orange-50/40 dark:hover:bg-orange-950/30 sm:flex-row sm:items-center sm:justify-between sm:px-2"
         >
           <div className="min-w-0">
-            <p className="truncate font-semibold text-slate-900">{t.title}</p>
-            <p className="mt-0.5 text-sm text-slate-600">
-              <span className="font-medium text-slate-700">{t.gameType}</span>
+            <p className="truncate font-semibold text-slate-900 dark:text-slate-100">{t.title}</p>
+            <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-400">
+              <span className="font-medium text-slate-700 dark:text-slate-300">{t.gameType}</span>
               <span className="text-slate-400"> · </span>
-              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
+              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                 {t.status}
               </span>
             </p>
@@ -167,10 +167,10 @@ function TicketList({
 
 function HistoryTable({ items }: { items: Ticket[] }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-100">
+    <div className="overflow-hidden rounded-xl border border-slate-100 dark:border-slate-800">
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
-          <thead className="bg-slate-50/90 text-xs font-bold uppercase tracking-wider text-slate-500">
+          <thead className="bg-slate-50/90 text-xs font-bold uppercase tracking-wider text-slate-500 dark:bg-slate-800/90 dark:text-slate-400">
             <tr>
               <th className="px-4 py-3">Sorteo</th>
               <th className="px-4 py-3">Tipo</th>
@@ -179,13 +179,13 @@ function HistoryTable({ items }: { items: Ticket[] }) {
               <th className="px-4 py-3 text-right" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white">
+          <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
             {items.map((t) => (
-              <tr key={t.id} className="transition hover:bg-orange-50/30">
-                <td className="px-4 py-3 font-semibold text-slate-900">{t.title}</td>
-                <td className="px-4 py-3 text-slate-700">{t.gameType}</td>
-                <td className="px-4 py-3 text-slate-700">{t.status}</td>
-                <td className="px-4 py-3 text-slate-700">{formatShortDate(t.gameDate)}</td>
+              <tr key={t.id} className="transition hover:bg-orange-50/30 dark:hover:bg-orange-950/20">
+                <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">{t.title}</td>
+                <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{t.gameType}</td>
+                <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{t.status}</td>
+                <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{formatShortDate(t.gameDate)}</td>
                 <td className="px-4 py-3 text-right">
                   <Link
                     className="font-bold text-orange-600 hover:text-orange-700"

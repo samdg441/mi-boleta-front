@@ -13,6 +13,8 @@ import {
 import { useAuthStore } from "@/presentation/stores/auth-store";
 import { getHomePathForUser } from "@/presentation/lib/auth-routes";
 import { Button } from "@/presentation/components/ui/button";
+import { ThemeToggle } from "@/presentation/components/ui/theme-toggle";
+import { notifyLogout } from "@/presentation/lib/toast";
 
 const userLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -57,11 +59,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   function logout() {
     clearSession();
+    notifyLogout();
     router.replace("/login");
   }
 
   return (
-    <div className="relative min-h-screen bg-brand-cream bg-mesh-light text-slate-900">
+    <div className="relative min-h-screen bg-brand-cream bg-mesh-light text-slate-900 dark:bg-slate-950 dark:bg-mesh-dark dark:text-slate-100">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-brand-navy/95 shadow-soft backdrop-blur-md">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-400/50 to-transparent" />
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
@@ -105,6 +108,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </nav>
 
             <div className="flex items-center gap-3 sm:pl-1">
+              <ThemeToggle variant="header" />
               <div
                 className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-xs font-bold text-white sm:flex"
                 title={user?.name}

@@ -10,6 +10,7 @@ import { ticketRepository } from "@/infrastructure/di/container";
 import { ApiError } from "@/infrastructure/http/api-error";
 import { Card } from "@/presentation/components/ui/card";
 import { FieldError } from "@/presentation/components/ui/field";
+import { notifyApiError, notifyTicketCreated } from "@/presentation/lib/toast";
 
 export default function NewTicketPage() {
   const router = useRouter();
@@ -39,11 +40,13 @@ export default function NewTicketPage() {
             setServerError(null);
             try {
               const created = await ticketRepository.create(payload);
+              notifyTicketCreated(created.title);
               router.replace(`/tickets/${created.id}`);
             } catch (e) {
               const msg =
                 e instanceof ApiError ? e.message : "No se pudo crear la boleta.";
               setServerError(msg);
+              notifyApiError(msg);
             }
           }}
         />
