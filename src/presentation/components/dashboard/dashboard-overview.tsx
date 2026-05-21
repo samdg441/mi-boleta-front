@@ -9,6 +9,7 @@ import { GradientLink } from "@/presentation/components/ui/gradient-link";
 import { DashboardStatsRow } from "@/presentation/components/dashboard/dashboard-stats-row";
 import { computeTicketStats } from "@/presentation/lib/ticket-stats";
 import { formatShortDate } from "@/presentation/lib/date";
+import { DaysUntilBadge } from "@/presentation/components/ui/days-until-badge";
 import {
   ClientPaginationFooter,
   paginate,
@@ -48,7 +49,7 @@ export function DashboardOverview({
   );
 
   return (
-    <>
+    <div className="space-y-8">
       <DashboardStatsRow
         counts={{
           totalRegistered: stats.totalRegistered,
@@ -114,7 +115,7 @@ export function DashboardOverview({
           </>
         )}
       </Card>
-    </>
+    </div>
   );
 }
 
@@ -132,7 +133,7 @@ function TicketList({
       {items.map((t) => (
         <li
           key={t.id}
-          className="flex flex-col gap-2 py-4 transition hover:bg-orange-50/40 dark:hover:bg-orange-950/30 sm:flex-row sm:items-center sm:justify-between sm:px-2"
+          className="flex flex-col gap-2 py-4 transition duration-200 hover:bg-orange-50/40 dark:hover:bg-orange-950/30 sm:flex-row sm:items-center sm:justify-between sm:px-2"
         >
           <div className="min-w-0">
             <p className="truncate font-semibold text-slate-900 dark:text-slate-100">{t.title}</p>
@@ -144,11 +145,14 @@ function TicketList({
               </span>
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-3">
+          <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
             {showDateBadge ? (
-              <span className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-800 shadow-sm">
-                {formatShortDate(t.gameDate)}
-              </span>
+              <>
+                <DaysUntilBadge gameDate={t.gameDate} />
+                <span className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-800 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200">
+                  {formatShortDate(t.gameDate)}
+                </span>
+              </>
             ) : null}
             {showDetailLink ? (
               <Link

@@ -7,7 +7,7 @@ import { loadAllMyTickets } from "@/presentation/hooks/load-all-tickets";
 import type { Ticket } from "@/domain/entities/ticket";
 import { ApiError } from "@/infrastructure/http/api-error";
 import { Card } from "@/presentation/components/ui/card";
-import { Spinner } from "@/presentation/components/ui/feedback";
+import { DashboardSkeleton } from "@/presentation/components/ui/skeleton";
 import { Button } from "@/presentation/components/ui/button";
 import { GradientLink } from "@/presentation/components/ui/gradient-link";
 import { PageHeader } from "@/presentation/components/layout/page-header";
@@ -55,7 +55,7 @@ export default function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <Spinner label="Cargando tu resumen…" />;
+    return <DashboardSkeleton />;
   }
 
   if (error) {
@@ -70,7 +70,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="animate-fade-in-up space-y-8">
       <PageHeader
         badge="Panel principal"
         icon={Sparkles}

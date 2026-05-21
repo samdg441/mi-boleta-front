@@ -69,6 +69,7 @@ export default function RegisterPage() {
       title="Crea tu cuenta"
       subtitle="En segundos podrás registrar boletas, fechas y estados sin perder el hilo."
     >
+      <div className="animate-fade-in-up space-y-5">
       <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)} noValidate>
         <div>
           <FieldLabel htmlFor="name">Nombre completo</FieldLabel>
@@ -106,12 +107,13 @@ export default function RegisterPage() {
       <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
         ¿Ya tienes cuenta?{" "}
         <Link
-          className="font-bold text-orange-600 underline decoration-orange-200 underline-offset-4 hover:text-orange-700"
+          className="font-bold text-orange-600 underline decoration-orange-200 underline-offset-4 transition hover:text-orange-700 dark:text-orange-400"
           href="/login"
         >
           Inicia sesión
         </Link>
       </p>
+      </div>
     </AuthSplitLayout>
   );
 }

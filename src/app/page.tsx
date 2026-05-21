@@ -19,8 +19,10 @@ export default function HomePage() {
   }, [hydrated, token, user, router]);
 
   return (
-    <div className="min-h-screen bg-brand-cream bg-mesh-light">
-      <Spinner label="Cargando…" />
+    <div className="flex min-h-screen items-center justify-center bg-brand-cream bg-mesh-light dark:bg-slate-950 dark:bg-mesh-dark">
+      <div className="animate-scale-in">
+        <Spinner label="Cargando Mi Boleta…" />
+      </div>
     </div>
   );
 }

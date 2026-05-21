@@ -81,6 +81,37 @@ src/
 | `/tickets/[id]/edit` | Edición parcial |
 | `/admin` | Solo `role === "admin"`: listado global con `q`, estado, tipo, `userId` y paginación |
 
+## Despliegue (rúbrica — criterio 11)
+
+**Dificultad:** baja–media (~30–60 min si el backend ya está en Render). No hace falta tocar código; es configuración.
+
+### Frontend (Vercel, recomendado para Next.js)
+
+1. Sube el repo a GitHub (público).
+2. En [vercel.com](https://vercel.com) → **Import Project** → elige el repo `mi-boleta-front`.
+3. Framework: **Next.js** (detectado solo). Build: `npm run build`. Output: por defecto.
+4. **Environment variable:**
+   - `NEXT_PUBLIC_API_BASE_URL` = `https://TU-API.onrender.com/api/v1` (tu URL real + `/api/v1`).
+5. Deploy → copia la URL (`https://mi-boleta-xxx.vercel.app`) y pégala en el README como **Demo**.
+
+### Backend (si aún no está desplegado)
+
+El API ya trae `render.yaml`. En Render necesitas `DATABASE_URL`, `JWT_SECRET`, `PORT`. Health: `/api/v1`.
+
+### CORS (obligatorio en producción)
+
+En el backend, el origen del frontend desplegado debe estar permitido (dominio de Vercel). Si solo funciona en local, casi siempre es CORS.
+
+### Checklist rápido
+
+| Paso | Tiempo aprox. |
+|------|----------------|
+| Cuenta Vercel + import repo | 5 min |
+| Variable `NEXT_PUBLIC_API_BASE_URL` | 2 min |
+| API en Render + migraciones | 15–30 min (si no existe) |
+| CORS + probar login en la demo | 10 min |
+| Link en README + captura | 5 min |
+
 ## Qué debes preparar tú (checklist)
 
 1. **URL de la API** en `NEXT_PUBLIC_API_BASE_URL` (local o desplegada).

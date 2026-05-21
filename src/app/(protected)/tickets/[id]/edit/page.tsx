@@ -58,7 +58,7 @@ export default function EditTicketPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="animate-fade-in-up space-y-8">
       <PageHeader
         badge="Edición"
         icon={Pencil}

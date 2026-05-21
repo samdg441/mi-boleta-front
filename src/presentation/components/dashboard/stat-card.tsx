@@ -14,7 +14,7 @@ export function StatCard({
   accent: string;
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-lift shadow-slate-900/5 backdrop-blur-xl transition hover:-translate-y-0.5 dark:border-slate-700/80 dark:bg-slate-900/80 dark:shadow-slate-950/30">
+    <div className="group relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-lift shadow-slate-900/5 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-slate-700/80 dark:bg-slate-900/80 dark:shadow-slate-950/30">
       <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-orange-400/10 blur-2xl transition group-hover:bg-orange-400/20" />
       <div className="relative flex items-start justify-between gap-3">
         <div>

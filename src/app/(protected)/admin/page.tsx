@@ -7,18 +7,17 @@ import type { AdminTicket } from "@/domain/entities/ticket";
 import { ApiError } from "@/infrastructure/http/api-error";
 import { PageHeader } from "@/presentation/components/layout/page-header";
 import { DashboardStatsRow } from "@/presentation/components/dashboard/dashboard-stats-row";
-import { AdminStatisticsPanel } from "@/presentation/components/admin/admin-statistics-panel";
 import { Card } from "@/presentation/components/ui/card";
 import { Button } from "@/presentation/components/ui/button";
 import { FieldError, FieldLabel, SelectInput, TextInput } from "@/presentation/components/ui/field";
-import { EmptyState, Spinner } from "@/presentation/components/ui/feedback";
+import { EmptyState } from "@/presentation/components/ui/feedback";
+import { StatsRowSkeleton, TableSkeleton } from "@/presentation/components/ui/skeleton";
 import { PaginationBar } from "@/presentation/components/ui/pagination";
 import { GAME_TYPES, TICKET_STATUSES } from "@/presentation/constants/ticket-options";
 import { LIST_PAGE_SIZE } from "@/presentation/constants/pagination";
 import { buildAdminSearchQuery } from "@/presentation/lib/admin-search";
 import { formatShortDate } from "@/presentation/lib/date";
 import { computeTicketStats } from "@/presentation/lib/ticket-stats";
-import { computeAdminAnalytics } from "@/presentation/lib/admin-analytics";
 import { loadAllAdminTickets } from "@/presentation/hooks/load-all-admin-tickets";
 import { toast } from "@/presentation/lib/toast";
 
@@ -136,8 +135,6 @@ export default function AdminTicketsPage() {
     [allTickets, metricsTotal],
   );
 
-  const analytics = useMemo(() => computeAdminAnalytics(allTickets), [allTickets]);
-
   function applyFilters(e: React.FormEvent) {
     e.preventDefault();
     setApplied(draft);
@@ -152,17 +149,17 @@ export default function AdminTicketsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="animate-fade-in-up space-y-8">
       <PageHeader
         accent="violet"
         icon={Shield}
         badge="Área restringida"
         title="Panel de administración"
-        description="Consulta métricas globales, estadísticas del sistema y filtra todas las boletas. Solo lectura: no puedes crear ni editar registros."
+        description="Resumen rápido y listado filtrado de todas las boletas. Las gráficas detalladas están en la sección Gráficas. Solo lectura."
       />
 
       {metricsLoading ? (
-        <Spinner label="Cargando métricas globales…" />
+        <StatsRowSkeleton />
       ) : metricsError ? (
         <Card title="Resumen">
           <p className="text-sm font-medium text-red-600">{metricsError}</p>
@@ -178,7 +175,6 @@ export default function AdminTicketsPage() {
               history: ticketStats.history.length,
             }}
           />
-          <AdminStatisticsPanel analytics={analytics} />
         </>
       )}
 
@@ -249,7 +245,7 @@ export default function AdminTicketsPage() {
 
       <Card title="Registros del sistema">
         {loading ? (
-          <Spinner label="Cargando listado…" />
+          <TableSkeleton rows={8} cols={6} />
         ) : rows.length === 0 ? (
           <EmptyState
             title="Sin resultados"
@@ -272,7 +268,7 @@ export default function AdminTicketsPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
                     {rows.map((t) => (
-                      <tr key={t.id} className="transition hover:bg-violet-50/40 dark:hover:bg-violet-950/30">
+                      <tr key={t.id} className="transition duration-200 hover:bg-violet-50/40 dark:hover:bg-violet-950/30">
                         <td className="px-4 py-3">
                           <p className="font-semibold text-slate-900 dark:text-slate-100">{t.title}</p>
                         </td>

@@ -17,7 +17,7 @@ export default function NewTicketPage() {
   const [serverError, setServerError] = useState<string | null>(null);
 
   return (
-    <div className="space-y-8">
+    <div className="animate-fade-in-up space-y-8">
       <PageHeader
         badge="Nuevo registro"
         icon={PlusCircle}

@@ -12,7 +12,8 @@ import { Spinner } from "@/presentation/components/ui/feedback";
 import { FieldError } from "@/presentation/components/ui/field";
 import { FileText } from "lucide-react";
 import { PageHeader } from "@/presentation/components/layout/page-header";
-import { formatShortDate } from "@/presentation/lib/date";
+import { formatShortDate, daysUntilSorteo } from "@/presentation/lib/date";
+import { DaysUntilBadge } from "@/presentation/components/ui/days-until-badge";
 import { notifyApiError, notifyTicketDeleted } from "@/presentation/lib/toast";
 
 export default function TicketDetailPage() {
@@ -78,7 +79,7 @@ export default function TicketDetailPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="animate-fade-in-up space-y-8">
       <FieldError message={deleteError ?? undefined} />
       <PageHeader
         badge="Detalle"
@@ -89,7 +90,7 @@ export default function TicketDetailPage() {
           <div className="flex flex-wrap gap-2">
             <Link
               href="/tickets"
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 shadow-sm transition hover:bg-slate-50"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 shadow-sm transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
             >
               Volver
             </Link>
@@ -109,24 +110,29 @@ export default function TicketDetailPage() {
       <Card title="Información">
         <dl className="grid gap-4 sm:grid-cols-2">
           <div>
-            <dt className="text-xs font-semibold uppercase text-slate-500">Tipo de juego</dt>
-            <dd className="mt-1 text-sm text-slate-900">{ticket.gameType}</dd>
+            <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Tipo de juego</dt>
+            <dd className="mt-1 text-sm text-slate-900 dark:text-slate-100">{ticket.gameType}</dd>
           </div>
           <div>
-            <dt className="text-xs font-semibold uppercase text-slate-500">Estado</dt>
-            <dd className="mt-1 text-sm text-slate-900">{ticket.status}</dd>
+            <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Estado</dt>
+            <dd className="mt-1 text-sm text-slate-900 dark:text-slate-100">{ticket.status}</dd>
           </div>
           <div>
-            <dt className="text-xs font-semibold uppercase text-slate-500">Fecha del sorteo</dt>
-            <dd className="mt-1 text-sm text-slate-900">{formatShortDate(ticket.gameDate)}</dd>
+            <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Fecha del sorteo</dt>
+            <dd className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-900 dark:text-slate-100">
+              <span>{formatShortDate(ticket.gameDate)}</span>
+              {daysUntilSorteo(ticket.gameDate) >= 0 ? (
+                <DaysUntilBadge gameDate={ticket.gameDate} />
+              ) : null}
+            </dd>
           </div>
           <div>
-            <dt className="text-xs font-semibold uppercase text-slate-500">Número jugado</dt>
-            <dd className="mt-1 text-sm text-slate-900">{ticket.gameNumber ?? "—"}</dd>
+            <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Número jugado</dt>
+            <dd className="mt-1 text-sm text-slate-900 dark:text-slate-100">{ticket.gameNumber ?? "—"}</dd>
           </div>
           <div>
-            <dt className="text-xs font-semibold uppercase text-slate-500">Valor apostado</dt>
-            <dd className="mt-1 text-sm text-slate-900">
+            <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Valor apostado</dt>
+            <dd className="mt-1 text-sm text-slate-900 dark:text-slate-100">
               {ticket.amount === null || ticket.amount === undefined
                 ? "—"
                 : new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP" }).format(
@@ -135,12 +141,12 @@ export default function TicketDetailPage() {
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-semibold uppercase text-slate-500">Lugar</dt>
-            <dd className="mt-1 text-sm text-slate-900">{ticket.place ?? "—"}</dd>
+            <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Lugar</dt>
+            <dd className="mt-1 text-sm text-slate-900 dark:text-slate-100">{ticket.place ?? "—"}</dd>
           </div>
           <div className="sm:col-span-2">
-            <dt className="text-xs font-semibold uppercase text-slate-500">Notas</dt>
-            <dd className="mt-1 whitespace-pre-wrap text-sm text-slate-900">
+            <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Notas</dt>
+            <dd className="mt-1 whitespace-pre-wrap text-sm text-slate-900 dark:text-slate-100">
               {ticket.notes ?? "—"}
             </dd>
           </div>
